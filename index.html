@@ -1,0 +1,2416 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UzQuiz Craft - Professional Quiz Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Primary Colors - PDF specifications */
+            --primary-dark: #1a1a2e;
+            --secondary-dark: #16213e;
+            --accent-blue: #0f3460;
+            --accent-gold: #e94560;
+            --text-light: #f5f5f5;
+            --text-muted: #b8b8b8;
+            
+            /* Enhanced Color Palette */
+            --dark-bg-1: #0d0d23;
+            --dark-bg-2: #1a1a2e;
+            --dark-bg-3: #16213e;
+            --sidebar-bg: #0f1419;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --hover-bg: rgba(255, 255, 255, 0.05);
+            
+            /* Functional Colors */
+            --success: #00d4aa;
+            --warning: #ffb800;
+            --danger: #ff5757;
+            --info: #3b82f6;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            --gradient-accent: linear-gradient(135deg, #e94560 0%, #f97316 100%);
+            --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 0 30px rgba(233, 69, 96, 0.3);
+            
+            /* Animation */
+            --transition-fast: all 0.2s ease;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gradient-primary);
+            color: var(--text-light);
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* Enhanced Background Effects */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(233, 69, 96, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(15, 52, 96, 0.1) 0%, transparent 50%);
+            z-index: -2;
+            animation: float-bg 25s ease-in-out infinite;
+        }
+
+        /* Premium Floating Particles */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            animation: float-particle 20s linear infinite;
+            opacity: 0.4;
+            filter: blur(1px);
+        }
+
+        /* AUTH SECTION - Login/Register */
+        .auth-container {
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .auth-wrapper {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid var(--card-border);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            transition: var(--transition-smooth);
+        }
+
+        .auth-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .auth-left {
+            flex: 1;
+            padding: 4rem 3rem;
+            background: var(--gradient-card);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-right {
+            flex: 1;
+            padding: 4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .auth-right::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10%;
+            bottom: 10%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--card-border), transparent);
+        }
+
+        .auth-brand {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .auth-brand h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-brand p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .auth-form h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-accent);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        /* DASHBOARD LAYOUT */
+        .dashboard-container {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .dashboard-container.active {
+            display: flex;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--card-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-smooth);
+        }
+
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--card-border);
+            text-align: center;
+        }
+
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 2rem 0;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-section-title {
+            padding: 0 2rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            position: relative;
+            border-radius: 0;
+        }
+
+        .sidebar-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 60%;
+            background: var(--gradient-accent);
+            border-radius: 0 4px 4px 0;
+            transition: var(--transition-smooth);
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            color: var(--text-light);
+            background: rgba(233, 69, 96, 0.1);
+        }
+
+        .sidebar-link.active::before,
+        .sidebar-link:hover::before {
+            width: 4px;
+        }
+
+        .sidebar-link i {
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-user {
+            padding: 2rem;
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar-avatar {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-user-info {
+            flex: 1;
+        }
+
+        .sidebar-user-name {
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-user-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .sidebar-logout {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .sidebar-logout:hover {
+            color: var(--danger);
+            background: rgba(255, 87, 87, 0.1);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            background: rgba(255, 255, 255, 0.02);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .main-header {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .main-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .main-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .main-body {
+            padding: 2rem;
+        }
+
+        /* CONTENT SECTIONS */
+        .content-section {
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* DASHBOARD HOME */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-accent);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(233, 69, 96, 0.3);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .stat-change {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+            background: rgba(0, 212, 170, 0.1);
+        }
+
+        /* ACTION CARDS */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .action-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(233, 69, 96, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .action-card:hover::before {
+            left: 100%;
+        }
+
+        .action-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(233, 69, 96, 0.3);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .action-card i {
+            font-size: 3rem;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .action-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-close:hover {
+            background: var(--danger);
+            transform: rotate(90deg);
+        }
+
+        /* FORM STYLES */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            font-family: inherit;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+        }
+
+        .form-select option {
+            background: var(--secondary-dark);
+            color: var(--text-light);
+            padding: 0.5rem;
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+        }
+
+        /* QUESTIONS LIST */
+        .questions-container {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .question-group {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: var(--transition-smooth);
+        }
+
+        .question-group:hover {
+            border-color: rgba(233, 69, 96, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .question-group-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .question-group-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .question-group-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .question-group-count {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .question-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .question-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .answer-item {
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
+        }
+
+        .answer-item.correct {
+            background: rgba(0, 212, 170, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .answer-item.correct::before {
+            content: '✓ ';
+            font-weight: bold;
+        }
+
+        /* TEST INTERFACE */
+        .test-progress {
+            background: rgba(255, 255, 255, 0.1);
+            height: 8px;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .test-progress-bar {
+            height: 100%;
+            background: var(--gradient-accent);
+            border-radius: 20px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .test-progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .test-question-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .test-question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-accent);
+        }
+
+        .test-question-number {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .test-question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .test-question-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .test-answers {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .test-answer {
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: left;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .test-answer::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: var(--gradient-accent);
+            transition: width 0.3s ease;
+        }
+
+        .test-answer:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(233, 69, 96, 0.5);
+            transform: translateX(5px);
+        }
+
+        .test-answer.selected {
+            border-color: var(--success);
+            background: rgba(0, 212, 170, 0.1);
+            color: var(--success);
+        }
+
+        .test-answer.selected::before {
+            width: 4px;
+        }
+
+        /* ALERTS */
+        /* ALERTS */
+        .alert {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            backdrop-filter: blur(20px);
+            z-index: 3000;
+            animation: slideInRight 0.4s ease;
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .alert-success {
+            background: rgba(0, 212, 170, 0.15);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .alert-danger {
+            background: rgba(255, 87, 87, 0.15);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: var(--info);
+            color: var(--info);
+        }
+
+        /* ANIMATIONS */
+        @keyframes float-bg {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-30px, -30px) rotate(120deg); }
+            66% { transform: translate(30px, -20px) rotate(240deg); }
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        /* LOADING STATES */
+        .loading {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-gold);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .auth-wrapper {
+                flex-direction: column;
+                max-width: 500px;
+            }
+
+            .auth-right::before {
+                display: none;
+            }
+
+            .main-header {
+                padding: 1rem;
+            }
+
+            .main-body {
+                padding: 1rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .answers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .test-question-card {
+                padding: 2rem;
+            }
+
+            .alert {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+            }
+        }
+
+        /* SCROLLBAR STYLING */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(233, 69, 96, 0.5);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(233, 69, 96, 0.7);
+        }
+
+        /* UTILITY CLASSES */
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 1rem; }
+        .mb-4 { margin-bottom: 1.5rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-3 { margin-top: 1rem; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 1rem; }
+    </style>
+</head>
+<body>
+    <!-- Floating particles background -->
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <!-- AUTH CONTAINER -->
+    <div class="auth-container" id="authContainer">
+        <div class="auth-wrapper">
+            <!-- Left Side - Brand -->
+            <div class="auth-left">
+                <div class="auth-brand">
+                    <h1><i class="fas fa-brain"></i> UzQuiz Craft</h1>
+                    <p>Professional Quiz Management Platform</p>
+                </div>
+                <div style="text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+                    <p><i class="fas fa-check-circle" style="color: var(--success);"></i> Unlimited question creation</p>
+                    <p><i class="fas fa-check-circle" style="color: var(--success);"></i> Advanced test management</p>
+                    <p><i class="fas fa-check-circle" style="color: var(--success);"></i> Real-time analytics</p>
+                    <p><i class="fas fa-check-circle" style="color: var(--success);"></i> Secure & reliable</p>
+                </div>
+            </div>
+
+            <!-- Right Side - Forms -->
+            <div class="auth-right">
+                <!-- Register Form -->
+                <div class="auth-form" id="registerSection">
+                    <h2><i class="fas fa-user-plus"></i> Ro'yxatdan O'tish</h2>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label class="form-label">Foydalanuvchi nomi</label>
+                            <input type="text" class="form-input" id="regUsername" placeholder="Username kiriting..." required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Parol</label>
+                            <input type="password" class="form-input" id="regPassword" placeholder="Kamida 6 belgi..." required minlength="6">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+                            <i class="fas fa-user-plus"></i> Ro'yxatdan O'tish
+                        </button>
+                    </form>
+                    <p style="text-align: center; color: var(--text-muted);">
+                        Allaqachon akkountingiz bormi? 
+                        <a href="#" onclick="switchAuthMode('login')" style="color: var(--accent-gold); text-decoration: none;">Kirish</a>
+                    </p>
+                </div>
+
+                <!-- Login Form -->
+                <div class="auth-form" id="loginSection" style="display: none;">
+                    <h2><i class="fas fa-sign-in-alt"></i> Tizimga Kirish</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label class="form-label">Foydalanuvchi nomi</label>
+                            <input type="text" class="form-input" id="loginUsername" placeholder="Username kiriting..." required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Parol</label>
+                            <input type="password" class="form-input" id="loginPassword" placeholder="Parol kiriting..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+                            <i class="fas fa-sign-in-alt"></i> Kirish
+                        </button>
+                    </form>
+                    <p style="text-align: center; color: var(--text-muted);">
+                        Yangi foydalanuvchimisiz? 
+                        <a href="#" onclick="switchAuthMode('register')" style="color: var(--accent-gold); text-decoration: none;">Ro'yxatdan o'ting</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD CONTAINER -->
+    <div class="dashboard-container" id="dashboardContainer">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fas fa-brain"></i> UzQuiz Craft
+                </div>
+                <div class="sidebar-subtitle">Premium Dashboard</div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Asosiy</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link active" data-section="dashboard">
+                                <i class="fas fa-home"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" data-section="groups">
+                                <i class="fas fa-layer-group"></i>
+                                <span>Guruhlar</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Savollar</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" data-section="add-question">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Savol Qo'shish</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" data-section="questions">
+                                <i class="fas fa-list-alt"></i>
+                                <span>Savollarni Ko'rish</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Testlar</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" data-section="start-test">
+                                <i class="fas fa-play-circle"></i>
+                                <span>Test Boshlash</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" class="sidebar-link" data-section="test-results">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Natijalar</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="sidebar-avatar" id="userAvatar">U</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="userName">Foydalanuvchi</div>
+                    <div class="sidebar-user-role">Quiz Creator</div>
+                </div>
+                <button class="sidebar-logout" onclick="logout()" title="Chiqish">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <div class="main-header">
+                <h1 id="pageTitle">Dashboard</h1>
+                <p id="pageSubtitle">Xush kelibsiz! Bu yerda loyihangizni boshqaring.</p>
+            </div>
+
+            <div class="main-body">
+                <!-- DASHBOARD SECTION -->
+                <section class="content-section active" id="dashboard-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div class="stat-number" id="totalGroups">0</div>
+                            <div class="stat-label">Guruhlar soni</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> Aktiv
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <div class="stat-number" id="totalQuestions">0</div>
+                            <div class="stat-label">Jami savollar</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> O'sishda
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <div class="stat-number" id="testsCompleted">0</div>
+                            <div class="stat-label">Testlar o'tkazildi</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> Faol
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-number">85%</div>
+                            <div class="stat-label">O'rtacha natija</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i> Yaxshi
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-grid">
+                        <div class="action-card" onclick="switchSection('add-question')">
+                            <i class="fas fa-plus-circle"></i>
+                            <h3>Yangi Savol</h3>
+                            <p>Mavjud guruhlarga yangi savollar qo'shing va testlarni boyiting.</p>
+                        </div>
+
+                        <div class="action-card" onclick="openModal('createGroupModal')">
+                            <i class="fas fa-layer-group"></i>
+                            <h3>Guruh Yaratish</h3>
+                            <p>Yangi fan yoki mavzu bo'yicha guruh yarating va tashkillashtiring.</p>
+                        </div>
+
+                        <div class="action-card" onclick="switchSection('start-test')">
+                            <i class="fas fa-play-circle"></i>
+                            <h3>Test Boshlash</h3>
+                            <p>Yaratgan savollaringizdan test o'tkazing va natijalarni oling.</p>
+                        </div>
+
+                        <div class="action-card" onclick="switchSection('questions')">
+                            <i class="fas fa-list-alt"></i>
+                            <h3>Savollar</h3>
+                            <p>Barcha yaratilgan savollarni ko'ring va tahrirlang.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- GROUPS SECTION -->
+                <section class="content-section" id="groups-section">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Guruhlar</h2>
+                            <p style="color: var(--text-muted);">Mavjud guruhlarni boshqaring va yangilarini yarating</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openModal('createGroupModal')">
+                            <i class="fas fa-plus"></i> Yangi Guruh
+                        </button>
+                    </div>
+
+                    <div class="action-grid" id="groupsList">
+                        <!-- Groups will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- ADD QUESTION SECTION -->
+                <section class="content-section" id="add-question-section">
+                    <div class="mb-4">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Yangi Savol Qo'shish</h2>
+                        <p style="color: var(--text-muted);">Tanlangan guruhga yangi savol qo'shing</p>
+                    </div>
+
+                    <div style="max-width: 600px;">
+                        <form id="addQuestionForm">
+                            <div class="form-group">
+                                <label class="form-label">Guruh tanlash</label>
+                                <select class="form-select" id="questionGroupSelect" required>
+                                    <option value="">Guruhni tanlang...</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Savol matni</label>
+                                <textarea class="form-textarea" id="questionTextInput" placeholder="Savolingizni bu yerga yozing..." required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Savol rasmi (ixtiyoriy)</label>
+                                <input type="file" class="form-input" id="questionImageInput" accept="image/jpeg,image/png">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">1-javob</label>
+                                    <input type="text" class="form-input" id="answer1Input" placeholder="Birinchi javob..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">2-javob</label>
+                                    <input type="text" class="form-input" id="answer2Input" placeholder="Ikkinchi javob..." required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">3-javob</label>
+                                    <input type="text" class="form-input" id="answer3Input" placeholder="Uchinchi javob..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">4-javob</label>
+                                    <input type="text" class="form-input" id="answer4Input" placeholder="To'rtinchi javob..." required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">To'g'ri javob</label>
+                                <select class="form-select" id="correctAnswerSelect" required>
+                                    <option value="">To'g'ri javobni tanlang...</option>
+                                    <option value="1">1-javob</option>
+                                    <option value="2">2-javob</option>
+                                    <option value="3">3-javob</option>
+                                    <option value="4">4-javob</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Savol Qo'shish
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- QUESTIONS SECTION -->
+                <section class="content-section" id="questions-section">
+                    <div class="mb-4">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Barcha Savollar</h2>
+                        <p style="color: var(--text-muted);">Yaratilgan savollarni ko'ring va boshqaring</p>
+                    </div>
+
+                    <div class="questions-container" id="questionsContainer">
+                        <!-- Questions will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- START TEST SECTION -->
+                <section class="content-section" id="start-test-section">
+                    <div class="mb-4">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Test Boshlash</h2>
+                        <p style="color: var(--text-muted);">Guruh tanlang va test sozlamalarini belgilang</p>
+                    </div>
+
+                    <div style="max-width: 500px;">
+                        <form id="startTestForm">
+                            <div class="form-group">
+                                <label class="form-label">Test uchun guruh</label>
+                                <select class="form-select" id="testGroupSelect" required>
+                                    <option value="">Guruhni tanlang...</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <input type="checkbox" id="shuffleQuestionsCheck" checked style="transform: scale(1.3);">
+                                    <div>
+                                        <div style="font-weight: 500; color: var(--text-light);">Savollarni aralashtirish</div>
+                                        <div style="font-size: 0.8rem; color: var(--text-muted);">Har gal turli tartibda ko'rsatish</div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; padding: 1rem; background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <input type="checkbox" id="shuffleAnswersCheck" checked style="transform: scale(1.3);">
+                                    <div>
+                                        <div style="font-weight: 500; color: var(--text-light);">Javoblarni aralashtirish</div>
+                                        <div style="font-size: 0.8rem; color: var(--text-muted);">Javob variantlarini aralashtirib berish</div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <i class="fas fa-play"></i> Testni Boshlash
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- TEST INTERFACE SECTION -->
+                <section class="content-section" id="test-interface-section">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Test o'tkazilmoqda</h2>
+                            <p style="color: var(--text-muted);" id="testGroupName">Matematika - Test</p>
+                        </div>
+                        <button class="btn" style="background: var(--danger); color: white;" onclick="stopTest()">
+                            <i class="fas fa-stop"></i> To'xtatish
+                        </button>
+                    </div>
+
+                    <div class="test-progress mb-4">
+                        <div class="test-progress-bar" id="testProgressBar" style="width: 0%;"></div>
+                    </div>
+
+                    <div class="test-question-card" id="testQuestionCard">
+                        <!-- Test question will be shown here -->
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-primary" id="nextQuestionBtn" onclick="nextQuestion()" disabled>
+                            Keyingi Savol <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- TEST RESULTS SECTION -->
+                <section class="content-section" id="test-results-section">
+                    <div class="mb-4">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Test Natijalari</h2>
+                        <p style="color: var(--text-muted);">O'tgan testlar statistikasi va natijalar</p>
+                    </div>
+
+                    <div style="text-align: center; padding: 4rem 2rem; color: var(--text-muted);">
+                        <i class="fas fa-chart-line" style="font-size: 4rem; margin-bottom: 2rem; opacity: 0.3;"></i>
+                        <h3>Test natijalari hali yo'q</h3>
+                        <p>Birinchi testni o'tkazganingizdan so'ng bu yerda statistika ko'rinadi</p>
+                        <button class="btn btn-primary mt-3" onclick="switchSection('start-test')">
+                            <i class="fas fa-play"></i> Test Boshlash
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- CREATE GROUP MODAL -->
+    <div class="modal" id="createGroupModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('createGroupModal')">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <h3><i class="fas fa-layer-group"></i> Yangi Guruh Yaratish</h3>
+                <p>Fan yoki mavzu bo'yicha guruh yarating</p>
+            </div>
+
+            <form id="createGroupForm">
+                <div class="form-group">
+                    <label class="form-label">Guruh nomi</label>
+                    <input type="text" class="form-input" id="groupNameInput" placeholder="Masalan: Matematika, Fizika, Ingliz tili..." required>
+                    <small style="color: var(--text-muted); font-size: 0.8rem;">
+                        Aniq va tushunarli nom kiriting
+                    </small>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-plus"></i> Guruh Yaratish
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables
+        const API_URL = 'https://it-zone.uz';
+        let currentUser = null;
+        let currentToken = null;
+        let testQuestions = [];
+        let currentQuestionIndex = 0;
+        let testAnswers = [];
+        let userGroups = [];
+        let testStartTime = null;
+
+        // Initialize particles
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Alert system
+        function showAlert(message, type = 'success', duration = 5000) {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'danger' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.style.transform = 'translateX(100%)';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            }, duration);
+        }
+
+        // API Helper Functions
+        async function apiRequest(endpoint, options = {}) {
+            try {
+                const response = await fetch(`${API_URL}${endpoint}`, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        ...options.headers
+                    },
+                    ...options
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Xatolik yuz berdi');
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
+        // Auth Functions
+        async function register(username, password) {
+            const formData = new URLSearchParams();
+            formData.append('username', username);
+            formData.append('password', password);
+
+            return await apiRequest('/register', {
+                method: 'POST',
+                body: formData
+            });
+        }
+
+        async function login(username, password) {
+            const formData = new URLSearchParams();
+            formData.append('username', username);
+            formData.append('password', password);
+
+            return await apiRequest('/login', {
+                method: 'POST',
+                body: formData
+            });
+        }
+
+        // Group Functions
+        async function createGroup(title) {
+            const formData = new URLSearchParams();
+            formData.append('token', currentToken);
+            formData.append('title', title);
+
+            return await apiRequest('/groups', {
+                method: 'POST',
+                body: formData
+            });
+        }
+
+        // Question Functions
+        async function createQuestion(groupTitle, questionText, answers, correctAnswer, imageFile) {
+            const formData = new FormData();
+            formData.append('token', currentToken);
+            formData.append('group_title', groupTitle);
+            formData.append('text', questionText);
+            formData.append('answer1', answers[0]);
+            formData.append('answer2', answers[1]);
+            formData.append('answer3', answers[2]);
+            formData.append('answer4', answers[3]);
+            formData.append('correct_answer', correctAnswer);
+            
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
+            const response = await fetch(`${API_URL}/questions`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || 'Xatolik yuz berdi');
+            }
+
+            return await response.json();
+        }
+
+        async function getAllQuestions() {
+            return await apiRequest('/questions/all', {
+                headers: {
+                    'Authorization': `Bearer ${currentToken}`
+                }
+            });
+        }
+
+        async function getTestQuestions(groupTitle, shuffleQuestions = true, shuffleAnswers = true) {
+            const params = new URLSearchParams({
+                token: currentToken,
+                group_title: groupTitle,
+                shuffle_questions: shuffleQuestions,
+                shuffle_answers: shuffleAnswers
+            });
+
+            return await apiRequest(`/questions/test?${params}`);
+        }
+
+        // UI Functions
+        function switchAuthMode(mode) {
+            const registerSection = document.getElementById('registerSection');
+            const loginSection = document.getElementById('loginSection');
+            
+            if (mode === 'login') {
+                registerSection.style.display = 'none';
+                loginSection.style.display = 'block';
+            } else {
+                loginSection.style.display = 'none';
+                registerSection.style.display = 'block';
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('dashboardContainer').classList.add('active');
+            
+            // Update user info
+            document.getElementById('userName').textContent = currentUser;
+            document.getElementById('userAvatar').textContent = currentUser.charAt(0).toUpperCase();
+            
+            // Load initial data
+            loadUserGroups();
+            updateStats();
+            switchSection('dashboard');
+        }
+
+        function switchSection(sectionName) {
+            // Update sidebar active states
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
+
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show target section
+            document.getElementById(`${sectionName}-section`).classList.add('active');
+
+            // Update page title
+            const titles = {
+                'dashboard': { title: 'Dashboard', subtitle: 'Xush kelibsiz! Bu yerda loyihangizni boshqaring.' },
+                'groups': { title: 'Guruhlar', subtitle: 'Mavjud guruhlarni boshqaring va yangilarini yarating.' },
+                'add-question': { title: 'Savol Qo\'shish', subtitle: 'Tanlangan guruhga yangi savol qo\'shing.' },
+                'questions': { title: 'Savollar', subtitle: 'Yaratilgan savollarni ko\'ring va boshqaring.' },
+                'start-test': { title: 'Test Boshlash', subtitle: 'Guruh tanlang va test sozlamalarini belgilang.' },
+                'test-results': { title: 'Test Natijalari', subtitle: 'O\'tgan testlar statistikasi va natijalar.' }
+            };
+
+            if (titles[sectionName]) {
+                document.getElementById('pageTitle').textContent = titles[sectionName].title;
+                document.getElementById('pageSubtitle').textContent = titles[sectionName].subtitle;
+            }
+
+            // Load section-specific data
+            if (sectionName === 'groups') {
+                loadGroupsSection();
+            } else if (sectionName === 'add-question') {
+                loadGroupsForSelect();
+            } else if (sectionName === 'questions') {
+                loadQuestionsSection();
+            } else if (sectionName === 'start-test') {
+                loadGroupsForTest();
+            }
+        }
+
+        async function loadUserGroups() {
+            try {
+                const data = await getAllQuestions();
+                userGroups = data.quations || [];
+            } catch (error) {
+                console.error('Error loading groups:', error);
+            }
+        }
+
+        async function loadGroupsSection() {
+            const container = document.getElementById('groupsList');
+            container.innerHTML = '';
+
+            try {
+                const data = await getAllQuestions();
+                const groups = data.quations || [];
+
+                if (groups.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 4rem 2rem; color: var(--text-muted); grid-column: 1 / -1;">
+                            <i class="fas fa-layer-group" style="font-size: 4rem; margin-bottom: 2rem; opacity: 0.3;"></i>
+                            <h3>Hali guruhlar yaratilmagan</h3>
+                            <p>Birinchi guruhingizni yarating va savollar qo'shishni boshlang</p>
+                            <button class="btn btn-primary mt-3" onclick="openModal('createGroupModal')">
+                                <i class="fas fa-plus"></i> Birinchi Guruh
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                groups.forEach(group => {
+                    const questionCount = group.quations ? group.quations.length : 0;
+                    const groupCard = document.createElement('div');
+                    groupCard.className = 'action-card';
+                    groupCard.innerHTML = `
+                        <i class="fas fa-layer-group"></i>
+                        <h3>${group.title}</h3>
+                        <p>${questionCount} ta savol mavjud</p>
+                        <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">
+                            <i class="fas fa-clock"></i> Yaratilgan
+                        </div>
+                    `;
+                    groupCard.onclick = () => switchSection('questions');
+                    container.appendChild(groupCard);
+                });
+
+            } catch (error) {
+                showAlert('Guruhlarni yuklashda xatolik: ' + error.message, 'danger');
+            }
+        }
+
+        async function loadGroupsForSelect() {
+            try {
+                const data = await getAllQuestions();
+                const groups = data.quations || [];
+                const select = document.getElementById('questionGroupSelect');
+                
+                select.innerHTML = '<option value="">Guruhni tanlang...</option>';
+                
+                groups.forEach(group => {
+                    const option = document.createElement('option');
+                    option.value = group.title;
+                    option.textContent = group.title;
+                    select.appendChild(option);
+                });
+
+                if (groups.length === 0) {
+                    select.innerHTML = '<option value="">Avval guruh yarating...</option>';
+                }
+            } catch (error) {
+                console.error('Error loading groups for select:', error);
+            }
+        }
+
+        async function loadGroupsForTest() {
+            try {
+                const data = await getAllQuestions();
+                const groups = data.quations || [];
+                const select = document.getElementById('testGroupSelect');
+                
+                select.innerHTML = '<option value="">Guruhni tanlang...</option>';
+                
+                groups.forEach(group => {
+                    const questionCount = group.quations ? group.quations.length : 0;
+                    if (questionCount > 0) {
+                        const option = document.createElement('option');
+                        option.value = group.title;
+                        option.textContent = `${group.title} (${questionCount} savol)`;
+                        select.appendChild(option);
+                    }
+                });
+
+                if (groups.filter(g => g.quations && g.quations.length > 0).length === 0) {
+                    select.innerHTML = '<option value="">Test uchun savollar yo\'q...</option>';
+                }
+            } catch (error) {
+                console.error('Error loading groups for test:', error);
+            }
+        }
+
+        async function loadQuestionsSection() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '<div class="loading text-center"><div class="spinner"></div> Savollar yuklanmoqda...</div>';
+
+            try {
+                const data = await getAllQuestions();
+                container.innerHTML = '';
+
+                if (!data.quations || data.quations.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 4rem 2rem; color: var(--text-muted);">
+                            <i class="fas fa-question-circle" style="font-size: 4rem; margin-bottom: 2rem; opacity: 0.3;"></i>
+                            <h3>Hali savollar yaratilmagan</h3>
+                            <p>Birinchi savolingizni yarating va testlarni boshlang</p>
+                            <button class="btn btn-primary mt-3" onclick="switchSection('add-question')">
+                                <i class="fas fa-plus"></i> Birinchi Savol
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                data.quations.forEach(group => {
+                    const groupDiv = document.createElement('div');
+                    groupDiv.className = 'question-group';
+                    
+                    const questionCount = group.quations ? group.quations.length : 0;
+                    
+                    groupDiv.innerHTML = `
+                        <div class="question-group-header">
+                            <div class="question-group-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div class="question-group-title">${group.title}</div>
+                                <div class="question-group-count">${questionCount} ta savol</div>
+                            </div>
+                            <button class="btn btn-primary" onclick="switchSection('add-question')" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                                <i class="fas fa-plus"></i> Qo'shish
+                            </button>
+                        </div>
+                        <div id="questions-${group.id}"></div>
+                    `;
+
+                    container.appendChild(groupDiv);
+
+                    // Add questions
+                    const questionsContainer = document.getElementById(`questions-${group.id}`);
+                    
+                    if (group.quations && group.quations.length > 0) {
+                        group.quations.forEach(question => {
+                            const questionDiv = document.createElement('div');
+                            questionDiv.className = 'question-item';
+                            
+                            let imageHtml = '';
+                            if (question.image) {
+                                imageHtml = `<img src="${API_URL}/${question.image}" style="max-width: 200px; border-radius: 8px; margin: 1rem 0;" alt="Question image">`;
+                            }
+
+                            questionDiv.innerHTML = `
+                                <div class="question-text">${question.text}</div>
+                                ${imageHtml}
+                                <div class="answers-grid">
+                                    ${question.answers.map((answer, index) => `
+                                        <div class="answer-item ${answer.is_correct ? 'correct' : ''}">
+                                            ${index + 1}. ${answer.text}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <div style="margin-top: 1rem; color: var(--text-muted); font-size: 0.8rem;">
+                                    <i class="fas fa-clock"></i> ${new Date(question.created_at).toLocaleDateString('uz-UZ')}
+                                </div>
+                            `;
+                            
+                            questionsContainer.appendChild(questionDiv);
+                        });
+                    } else {
+                        questionsContainer.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 2rem;">Bu guruhda hali savollar yo\'q</p>';
+                    }
+                });
+
+            } catch (error) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: var(--danger);">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Savollarni yuklashda xatolik: ${error.message}</p>
+                        <button class="btn btn-primary mt-3" onclick="loadQuestionsSection()">
+                            <i class="fas fa-redo"></i> Qayta urinish
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        async function updateStats() {
+            try {
+                const data = await getAllQuestions();
+                let totalQuestions = 0;
+                let totalGroups = data.quations ? data.quations.length : 0;
+
+                if (data.quations) {
+                    data.quations.forEach(group => {
+                        if (group.quations) {
+                            totalQuestions += group.quations.length;
+                        }
+                    });
+                }
+
+                document.getElementById('totalGroups').textContent = totalGroups;
+                document.getElementById('totalQuestions').textContent = totalQuestions;
+                document.getElementById('testsCompleted').textContent = localStorage.getItem('testsCompleted') || 0;
+            } catch (error) {
+                console.error('Error updating stats:', error);
+            }
+        }
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Test Functions
+        function startTest(groupTitle, shuffleQuestions, shuffleAnswers) {
+            testStartTime = new Date();
+            document.getElementById('testGroupName').textContent = `${groupTitle} - Test`;
+            switchSection('test-interface');
+            showCurrentQuestion();
+        }
+
+        function showCurrentQuestion() {
+            if (currentQuestionIndex >= testQuestions.length) {
+                finishTest();
+                return;
+            }
+
+            const question = testQuestions[currentQuestionIndex];
+            const progress = ((currentQuestionIndex + 1) / testQuestions.length) * 100;
+            document.getElementById('testProgressBar').style.width = progress + '%';
+
+            let imageHtml = '';
+            if (question.image) {
+                imageHtml = `<img src="${API_URL}/${question.image}" class="test-question-image" alt="Question image">`;
+            }
+
+            document.getElementById('testQuestionCard').innerHTML = `
+                <div class="test-question-number">Savol ${currentQuestionIndex + 1} / ${testQuestions.length}</div>
+                <div class="test-question-text">${question.text}</div>
+                ${imageHtml}
+                <div class="test-answers">
+                    ${question.answers.map((answer, index) => `
+                        <div class="test-answer" onclick="selectTestAnswer(${index})" data-index="${index}">
+                            ${answer.text}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Update button
+            const nextBtn = document.getElementById('nextQuestionBtn');
+            if (currentQuestionIndex === testQuestions.length - 1) {
+                nextBtn.innerHTML = '<i class="fas fa-flag-checkered"></i> Testni Yakunlash';
+            } else {
+                nextBtn.innerHTML = 'Keyingi Savol <i class="fas fa-arrow-right"></i>';
+            }
+            nextBtn.disabled = true;
+        }
+
+        function selectTestAnswer(answerIndex) {
+            // Remove previous selections
+            document.querySelectorAll('.test-answer').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // Select current answer
+            document.querySelector(`[data-index="${answerIndex}"]`).classList.add('selected');
+            
+            // Enable next button
+            document.getElementById('nextQuestionBtn').disabled = false;
+            
+            // Store answer
+            testAnswers[currentQuestionIndex] = answerIndex;
+        }
+
+        function nextQuestion() {
+            if (testAnswers[currentQuestionIndex] === undefined) {
+                showAlert('Iltimos javob tanlang!', 'danger');
+                return;
+            }
+
+            currentQuestionIndex++;
+            showCurrentQuestion();
+        }
+
+        function finishTest() {
+            let correctAnswers = 0;
+            let incorrectAnswers = [];
+            
+            testQuestions.forEach((question, index) => {
+                const userAnswer = testAnswers[index];
+                if (userAnswer !== undefined) {
+                    const isCorrect = question.answers[userAnswer].is_correct;
+                    if (isCorrect) {
+                        correctAnswers++;
+                    } else {
+                        incorrectAnswers.push({
+                            question: question.text,
+                            userAnswer: question.answers[userAnswer].text,
+                            correctAnswer: question.answers.find(a => a.is_correct).text
+                        });
+                    }
+                }
+            });
+
+            const percentage = Math.round((correctAnswers / testQuestions.length) * 100);
+            const testDuration = Math.round((new Date() - testStartTime) / 1000 / 60); // minutes
+            
+            // Update test count
+            let testsCompleted = parseInt(localStorage.getItem('testsCompleted') || 0) + 1;
+            localStorage.setItem('testsCompleted', testsCompleted);
+
+            // Show results
+            document.getElementById('testQuestionCard').innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 2rem;">
+                        ${percentage >= 80 ? '🏆' : percentage >= 60 ? '👏' : '📚'}
+                    </div>
+                    <h2 style="font-size: 2rem; margin-bottom: 1rem;">Test Yakunlandi!</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                        <div style="background: rgba(0, 212, 170, 0.1); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--success);">
+                            <div style="font-size: 2rem; color: var(--success); font-weight: bold;">${correctAnswers}</div>
+                            <div style="color: var(--success); font-size: 0.9rem;">To'g'ri javoblar</div>
+                        </div>
+                        <div style="background: rgba(255, 87, 87, 0.1); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--danger);">
+                            <div style="font-size: 2rem; color: var(--danger); font-weight: bold;">${testQuestions.length - correctAnswers}</div>
+                            <div style="color: var(--danger); font-size: 0.9rem;">Noto'g'ri javoblar</div>
+                        </div>
+                        <div style="background: rgba(233, 69, 96, 0.1); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--accent-gold);">
+                            <div style="font-size: 2rem; color: var(--accent-gold); font-weight: bold;">${percentage}%</div>
+                            <div style="color: var(--accent-gold); font-size: 0.9rem;">Umumiy natija</div>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(255, 255, 255, 0.03); padding: 1.5rem; border-radius: 12px; margin: 2rem 0;">
+                        <div style="color: var(--text-muted); font-size: 0.9rem;">
+                            <i class="fas fa-clock"></i> Test davomiyligi: ${testDuration} daqiqa
+                        </div>
+                        <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
+                            <i class="fas fa-chart-line"></i> Baholash: ${
+                                percentage >= 85 ? 'A\'lo (Excellent)' : 
+                                percentage >= 70 ? 'Yaxshi (Good)' : 
+                                percentage >= 55 ? 'Qoniqarli (Satisfactory)' : 
+                                'Qoniqarsiz (Needs Improvement)'
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('nextQuestionBtn').innerHTML = '<i class="fas fa-home"></i> Bosh Sahifaga Qaytish';
+            document.getElementById('nextQuestionBtn').onclick = () => switchSection('dashboard');
+            document.getElementById('nextQuestionBtn').disabled = false;
+
+            showAlert(`Test yakunlandi! ${percentage}% to'g'ri javob.`, percentage >= 60 ? 'success' : 'danger');
+        }
+
+        function stopTest() {
+            if (confirm('Testni to\'xtatmoqchimisiz? Barcha javoblar yo\'qoladi.')) {
+                testQuestions = [];
+                currentQuestionIndex = 0;
+                testAnswers = [];
+                switchSection('dashboard');
+                showAlert('Test to\'xtatildi', 'info');
+            }
+        }
+
+        function logout() {
+            if (confirm('Tizimdan chiqmoqchimisiz?')) {
+                currentUser = null;
+                currentToken = null;
+                testQuestions = [];
+                currentQuestionIndex = 0;
+                testAnswers = [];
+                userGroups = [];
+
+                document.getElementById('authContainer').style.display = 'flex';
+                document.getElementById('dashboardContainer').classList.remove('active');
+                
+                // Reset forms
+                document.getElementById('registerForm').reset();
+                document.getElementById('loginForm').reset();
+                
+                showAlert('Tizimdan muvaffaqiyatli chiqdingiz!', 'info');
+            }
+        }
+
+        // Form Event Listeners
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="loading"><div class="spinner"></div> Ro\'yxatdan o\'tkazilmoqda...</div>';
+
+            try {
+                const result = await register(username, password);
+                showAlert('Muvaffaqiyatli ro\'yxatdan o\'tdingiz!', 'success');
+                
+                currentToken = result.access_token;
+                currentUser = result.username;
+                showDashboard();
+            } catch (error) {
+                showAlert(error.message, 'danger');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Ro\'yxatdan O\'tish';
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="loading"><div class="spinner"></div> Kirilmoqda...</div>';
+
+            try {
+                const result = await login(username, password);
+                showAlert('Muvaffaqiyatli kirdingiz!', 'success');
+                
+                currentToken = result.access_token;
+                currentUser = result.username;
+                showDashboard();
+            } catch (error) {
+                showAlert(error.message, 'danger');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Kirish';
+            }
+        });
+
+        document.getElementById('createGroupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('groupNameInput').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="loading"><div class="spinner"></div> Yaratilmoqda...</div>';
+
+            try {
+                await createGroup(title);
+                showAlert(`"${title}" guruhi muvaffaqiyatli yaratildi!`, 'success');
+                closeModal('createGroupModal');
+                document.getElementById('createGroupForm').reset();
+                
+                await loadUserGroups();
+                await updateStats();
+                
+                if (document.getElementById('groups-section').classList.contains('active')) {
+                    loadGroupsSection();
+                }
+            } catch (error) {
+                showAlert(error.message, 'danger');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Guruh Yaratish';
+            }
+        });
+
+        document.getElementById('addQuestionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const groupTitle = document.getElementById('questionGroupSelect').value;
+            const questionText = document.getElementById('questionTextInput').value;
+            const answers = [
+                document.getElementById('answer1Input').value,
+                document.getElementById('answer2Input').value,
+                document.getElementById('answer3Input').value,
+                document.getElementById('answer4Input').value
+            ];
+            const correctAnswer = document.getElementById('correctAnswerSelect').value;
+            const imageFile = document.getElementById('questionImageInput').files[0];
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="loading"><div class="spinner"></div> Savollar yaratilmoqda...</div>';
+
+            try {
+                await createQuestion(groupTitle, questionText, answers, correctAnswer, imageFile);
+                showAlert('Savol muvaffaqiyatli yaratildi!', 'success');
+                document.getElementById('addQuestionForm').reset();
+                
+                await updateStats();
+            } catch (error) {
+                showAlert(error.message, 'danger');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-plus"></i> Savol Qo\'shish';
+            }
+        });
+
+        document.getElementById('startTestForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const groupTitle = document.getElementById('testGroupSelect').value;
+            const shuffleQuestions = document.getElementById('shuffleQuestionsCheck').checked;
+            const shuffleAnswers = document.getElementById('shuffleAnswersCheck').checked;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="loading"><div class="spinner"></div> Test tayyorlanmoqda...</div>';
+
+            try {
+                const result = await getTestQuestions(groupTitle, shuffleQuestions, shuffleAnswers);
+                
+                if (result.questions && result.questions.length > 0) {
+                    testQuestions = result.questions;
+                    currentQuestionIndex = 0;
+                    testAnswers = [];
+                    
+                    startTest(groupTitle, shuffleQuestions, shuffleAnswers);
+                } else {
+                    showAlert('Bu guruhda test uchun savollar topilmadi!', 'danger');
+                }
+            } catch (error) {
+                showAlert(error.message, 'danger');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-play"></i> Testni Boshlash';
+            }
+        });
+
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.getAttribute('data-section');
+                switchSection(section);
+            });
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+        });
+    </script>
+</body>
+</html>
