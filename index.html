@@ -966,7 +966,6 @@
         }
 
         /* ALERTS */
-        /* ALERTS */
         .alert {
             position: fixed;
             top: 2rem;
@@ -1643,6 +1642,31 @@
         let userGroups = [];
         let testStartTime = null;
 
+        // Load user data from localStorage on page load
+        function loadUserFromStorage() {
+            const savedUser = localStorage.getItem('currentUser');
+            const savedToken = localStorage.getItem('currentToken');
+            
+            if (savedUser && savedToken) {
+                currentUser = savedUser;
+                currentToken = savedToken;
+                return true;
+            }
+            return false;
+        }
+
+        // Save user data to localStorage
+        function saveUserToStorage(username, token) {
+            localStorage.setItem('currentUser', username);
+            localStorage.setItem('currentToken', token);
+        }
+
+        // Clear user data from localStorage
+        function clearUserFromStorage() {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentToken');
+        }
+
         // Initialize particles
         function createParticles() {
             const container = document.getElementById('particlesContainer');
@@ -2242,6 +2266,9 @@
                 testAnswers = [];
                 userGroups = [];
 
+                // Clear localStorage
+                clearUserFromStorage();
+
                 document.getElementById('authContainer').style.display = 'flex';
                 document.getElementById('dashboardContainer').classList.remove('active');
                 
@@ -2269,6 +2296,10 @@
                 
                 currentToken = result.access_token;
                 currentUser = result.username;
+                
+                // Save to localStorage
+                saveUserToStorage(result.username, result.access_token);
+                
                 showDashboard();
             } catch (error) {
                 showAlert(error.message, 'danger');
@@ -2293,6 +2324,10 @@
                 
                 currentToken = result.access_token;
                 currentUser = result.username;
+                
+                // Save to localStorage
+                saveUserToStorage(result.username, result.access_token);
+                
                 showDashboard();
             } catch (error) {
                 showAlert(error.message, 'danger');
@@ -2410,6 +2445,11 @@
         // Initialize app
         document.addEventListener('DOMContentLoaded', () => {
             createParticles();
+            
+            // Check if user is already logged in
+            if (loadUserFromStorage()) {
+                showDashboard();
+            }
         });
     </script>
 </body>
